@@ -1,0 +1,15 @@
+#game-board {
+    position: sticky;
+    width: 100vw;
+    height: 100vh;
+    background-color: #a8c2a2;
+    overflow: hidden;
+    border: 1px solid black;
+}
+
+.snake-segment {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: black;
+}
