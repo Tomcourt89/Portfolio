@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
     const gameBoard = document.getElementById('game-board');
     const gridSize = 40; // Size of each segment in pixels
 
@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Set game board size to be a multiple of gridSize
     function setGameBoardSize() {
-        let padding = 40;
+        let padding = gridSize;
         if(window.innerWidth >= 640) {
-            padding = 80;
+            padding = padding * 2;
         }
         
         const width = Math.floor((window.innerWidth / gridSize) * gridSize) - padding;
@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
         food.classList.add('snake-segment');
         food.style.left = `${foodX}px`;
         food.style.top = `${foodY}px`;
-        food.style.backgroundColor = 'black';
 
         gameBoard.appendChild(food);
     }
@@ -107,6 +106,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    // TODO Add keyboard controls option when content is hidden.
 
     setInterval(() => {
         // Ensure the snake doesn't move if it hasn't been directed yet
