@@ -6,6 +6,14 @@ header {
     width: 20vw;
     height: 100vh;
     background: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-block: 20px;
+
+    &:has(.just-play.active) ~ .content-wrapper main {
+        display: none;
+    }
 }
 
 .menu-toggle {

@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let autoMove = false;
     let immune = false;
     let immunityTimer;
-
     let food = null;
 
     const initialLength = 6; 
@@ -17,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const immunityDuration = 2000;
 
     let currentSpeed = 400;
+    let moveInterval;
 
     // Set game board size to be a multiple of gridSize
     function setGameBoardSize() {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create the initial snake
     function createSnake(length) {
-        // Calculate center starting position
+        // TODO update starting position, on reset it should face the menu so that an instant reset doesnt happen on mouse move.
         const startX = Math.floor((gameBoard.clientWidth / gridSize - length) / 2) * gridSize;
         const startY = Math.floor(gameBoard.clientHeight / gridSize / 2) * gridSize;
 
@@ -121,6 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // TODO Add keyboard controls option when content is hidden.
+    function setSpeed(speed) {
+        currentSpeed = speed;
+        clearInterval(moveInterval);
+        moveInterval = setInterval(moveSnake, currentSpeed);
+        resetGame();
+    }
+
+    document.querySelector('.slow').addEventListener('click', () => setSpeed(800));
+    document.querySelector('.medium').addEventListener('click', () => setSpeed(400));
+    document.querySelector('.fast').addEventListener('click', () => setSpeed(300));
+    document.querySelector('.fastest').addEventListener('click', () => setSpeed(200));
 
     setInterval(() => {
         // Check for inactivity to enable auto-play after 5 seconds
@@ -159,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 500);
     
-    setInterval(() => {
+    function moveSnake() {
         if (window.gamePause()) return;
 
         // Ensure the snake doesn't move if it hasn't been directed yet
@@ -226,8 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create new food after consumption
             createFood();
         }
+    }
 
-    }, currentSpeed); // Speed of the snake
+    moveInterval = setInterval(moveSnake, currentSpeed);
 
     function resetGame() {
         // Remove existing snake segments from the game board
