@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         gameBoard.style.height = `${height}px`;
     }
 
-    // Create the initial snake
     function createSnake(length) {
         // TODO update starting position, on reset it should face the menu so that an instant reset doesnt happen on mouse move.
         const startX = Math.floor((gameBoard.clientWidth / gridSize - length) / 2) * gridSize;
@@ -52,10 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to create food
     function createFood() {
         if (food) {
-            gameBoard.removeChild(food); // Remove existing food if any
+            gameBoard.removeChild(food);
         }
 
         let foodX, foodY;
@@ -77,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } while (isOccupied);
 
-        // Create and style food element, same as snake segment for now
         food = document.createElement('div');
         food.classList.add('snake-segment');
         food.style.left = `${foodX}px`;
@@ -86,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         gameBoard.appendChild(food);
     }
 
-    // Initialize the board, snake and food
     setGameBoardSize();
     createSnake(initialLength);
     createFood();
@@ -95,10 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
     mouseX = gameBoard.clientWidth / 2;
     mouseY = gameBoard.clientHeight / 2;
 
-    // Mouse move event listener
     document.addEventListener('mousemove', (event) => {
-        lastMoveTime = Date.now(); // Reset last move time
-        autoMove = false; // Turn off auto-play if mouse is moved
+        lastMoveTime = Date.now();
+        autoMove = false;
 
         mouseX = event.clientX - gameBoard.getBoundingClientRect().left;
         mouseY = event.clientY - gameBoard.getBoundingClientRect().top;
@@ -106,13 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const head = snakeSegments[0];
 
         if (Math.abs(mouseX - head.offsetLeft) > Math.abs(mouseY - head.offsetTop)) {
-            const newDirectionX = (mouseX > head.offsetLeft) ? 1 : -1; // Move right or left
+            const newDirectionX = (mouseX > head.offsetLeft) ? 1 : -1;
             if (direction.x !== -newDirectionX) {
                 direction.x = newDirectionX;
                 direction.y = 0;
             }
         } else {
-            const newDirectionY = (mouseY > head.offsetTop) ? 1 : -1; // Move down or up
+            const newDirectionY = (mouseY > head.offsetTop) ? 1 : -1;
             if (direction.y !== -newDirectionY) {
                 direction.y = newDirectionY;
                 direction.x = 0;
@@ -234,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
             snakeSegments.push(newSegment);
             gameBoard.appendChild(newSegment);
 
-            // Create new food after consumption
             createFood();
         }
     }
@@ -247,11 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
             gameBoard.removeChild(segment);
         });
 
-        // Reset the snake and direction
         snakeSegments = [];
         direction = { x: 1, y: 0 }; // Reset direction, added immunity to prevent double resets.
 
-        // Reset snake, food, and immunity
         createSnake(newSnakeLength);
         createFood();
 
@@ -262,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, immunityDuration);
     }
 
-    // Handle window resize
     window.addEventListener('resize', () => {
         setGameBoardSize();
         resetGame();

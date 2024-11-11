@@ -30,5 +30,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.gamePause = () => gamePause;
-    window.contentWrapper = () => contentWrapper;
 });
