@@ -5,21 +5,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let snakeSegments = [];
     let direction = { x: 0, y: 0 };
     let mouseX, mouseY;
+    let lastMoveTime = Date.now();
+    let autoMove = false;
+    let immune = false;
+    let immunityTimer;
 
     let food = null;
 
-    const initialLength = 6; // Initial length of the snake
-    const newSnakeLength = 7; // Length of the snake after collision
+    const initialLength = 6; 
+    const newSnakeLength = 7; 
+    const immunityDuration = 2000;
+
+    let currentSpeed = 400;
 
     // Set game board size to be a multiple of gridSize
     function setGameBoardSize() {
         let padding = gridSize;
-        if(window.innerWidth >= 640) {
+        if (window.innerWidth >= 640) {
             padding = padding * 2;
         }
-        
-        const width = Math.floor((window.innerWidth / gridSize) * gridSize) - padding;
-        const height = Math.floor((window.innerHeight / gridSize) * gridSize) - padding;
+
+        let width = Math.floor((window.innerWidth / gridSize) * gridSize) - padding;
+        let height = Math.floor((window.innerHeight / gridSize) * gridSize) - padding;
+
+        width -= width % padding;
+        height -= height % padding;
 
         gameBoard.style.width = `${width}px`;
         gameBoard.style.height = `${height}px`;
@@ -87,6 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mouse move event listener
     document.addEventListener('mousemove', (event) => {
+        lastMoveTime = Date.now(); // Reset last move time
+        autoMove = false; // Turn off auto-play if mouse is moved
+
         mouseX = event.clientX - gameBoard.getBoundingClientRect().left;
         mouseY = event.clientY - gameBoard.getBoundingClientRect().top;
 
@@ -110,8 +123,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // TODO Add keyboard controls option when content is hidden.
 
     setInterval(() => {
+        // Check for inactivity to enable auto-play after 5 seconds
+        // May need to increase this as on large screen sizes and slow speed it can take longer than 5 to get from a to b
+        if (Date.now() - lastMoveTime > 5000) {
+            autoMove = true;
+
+            const head = snakeSegments[0];
+            const possibleDirections = [
+                { x: 1, y: 0 },
+                { x: -1, y: 0 },
+                { x: 0, y: 1 },
+                { x: 0, y: -1 }
+            ];
+
+            let bestDirection = null;
+            let minDistance = Infinity;
+
+            possibleDirections.forEach(dir => {
+                const newX = head.offsetLeft + dir.x * gridSize;
+                const newY = head.offsetTop + dir.y * gridSize;
+
+                // Ensures new direction doesn't lead to a collision
+                if (!snakeSegments.some(segment => segment.offsetLeft === newX && segment.offsetTop === newY)) {
+                    const dist = Math.abs(food.offsetLeft - newX) + Math.abs(food.offsetTop - newY);
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        bestDirection = dir;
+                    }
+                }
+            });
+
+            if (bestDirection) {
+                direction = bestDirection;
+            }
+        }
+    }, 500);
+    
+    setInterval(() => {
+        if (window.gamePause()) return;
+
         // Ensure the snake doesn't move if it hasn't been directed yet
-        if (direction.x === 0 && direction.y === 0) return;
+        if (!autoMove && direction.x === 0 && direction.y === 0) return;
 
         // Move each segment to the position of the previous segment
         for (let i = snakeSegments.length - 1; i > 0; i--) {
@@ -136,24 +188,24 @@ document.addEventListener('DOMContentLoaded', () => {
             headY = 0;
         }
 
-        // Check for collision with itself
-        for (let i = 1; i < snakeSegments.length; i++) {
-            if (headX === snakeSegments[i].offsetLeft && headY === snakeSegments[i].offsetTop) {
-                resetGame();
-                return;
+        // Check for collision with itself, considering immunity
+        if (!immune) {
+            for (let i = 1; i < snakeSegments.length; i++) {
+                if (headX === snakeSegments[i].offsetLeft && headY === snakeSegments[i].offsetTop) {
+                    resetGame();
+                    return;
+                }
             }
-        }
 
-        // TODO
-        // Preventing 180 degree turn doesnt really work yet 
-        // add third segment logic as the only possible collision for the head is the 4th segment
-        if (snakeSegments.length > 2) {
-            const secondSegmentX = snakeSegments[1].offsetLeft;
-            const secondSegmentY = snakeSegments[1].offsetTop;
+            // TODO Immunity and new auto logic helps prevent colliding with itself, need to test further.
+            if (snakeSegments.length > 2) {
+                const secondSegmentX = snakeSegments[1].offsetLeft;
+                const secondSegmentY = snakeSegments[1].offsetTop;
 
-            if (headX === secondSegmentX && headY === secondSegmentY) {
-                resetGame();
-                return;
+                if (headX === secondSegmentX && headY === secondSegmentY) {
+                    resetGame();
+                    return;
+                }
             }
         }
 
@@ -175,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
             createFood();
         }
 
-    }, 400); // Speed of the game // TODO Add variable speeds
+    }, currentSpeed); // Speed of the snake
 
     function resetGame() {
         // Remove existing snake segments from the game board
@@ -185,11 +237,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Reset the snake and direction
         snakeSegments = [];
-        direction = { x: 1, y: 0 }; // Reset direction // TODO Make the direction be wherever the mouse currently is to prevent double resets
+        direction = { x: 1, y: 0 }; // Reset direction, added immunity to prevent double resets.
 
-        // Reset
+        // Reset snake, food, and immunity
         createSnake(newSnakeLength);
         createFood();
+
+        immune = true;
+        clearTimeout(immunityTimer);
+        immunityTimer = setTimeout(() => {
+            immune = false;
+        }, immunityDuration);
     }
 
     // Handle window resize

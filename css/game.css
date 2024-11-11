@@ -4,7 +4,7 @@
     height: 100vh;
     background-color: var(--sage);
     overflow: hidden;
-    border: 5px solid var(--snake);
+    outline: 5px solid var(--snake);
 }
 
 .snake-segment {
