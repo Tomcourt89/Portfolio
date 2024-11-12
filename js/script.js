@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.querySelector('.menu-toggle input');
     const contentWrapper = document.querySelector('.content-wrapper');
     const playToggle = document.querySelector('.just-play');
+    const menuVideo = document.querySelector('video');
 
     let gamePause = false;
 
@@ -12,10 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggle.addEventListener('change', () => {
         if (menuToggle.checked) {
             contentWrapper.classList.add('menu-open');
+            menuVideo.play();
             gamePause = true;
         } else {
             contentWrapper.classList.remove('menu-open');
+            menuVideo.pause();
             gamePause = false;
+        }
+    });
+
+    window.addEventListener('pageshow', (ev) => {
+        if (ev.persisted) {
+            menuToggle.checked = false;
         }
     });
 

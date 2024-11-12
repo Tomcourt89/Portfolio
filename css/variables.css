@@ -4,4 +4,6 @@
     --white: #fff;
     --snake: #5e5e5e;
     --sage: #a8c2a2;
+
+    interpolate-size: allow-keywords; /* Chrome only */
 }

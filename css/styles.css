@@ -3,16 +3,87 @@ header {
     top: 0;
     right: 0;
     z-index: 1;
-    width: 20vw;
+    width: 80vw;
     height: 100vh;
     background: var(--white);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding-block: 20px;
+    padding-block: 10%;
+    padding-inline: 20px;
+    overflow: hidden;
 
-    &:has(.just-play.active) ~ .content-wrapper main {
-        display: none;
+    section {
+        z-index: 5;
+    }
+
+    .video-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            height: 100%;
+            width: 100%;
+            background: color(from var(--sage) srgb r g b / 1);
+            transition: background 3s ease;
+        }
+    }
+
+    .speeds {
+        .fastest {
+            margin-top: 20px;
+            opacity: 0;
+        }
+    }
+
+    .options {
+        height: 0;
+        transition: height 0.5s ease;
+
+        > * {
+            display: none;
+            opacity: 0;
+            transition-property: display opacity;
+            transition-duration: 0.5s;
+            transition-behavior: allow-discrete;
+        }
+    }
+
+    &:has(.just-play.active) {
+        &~ .content-wrapper main {
+            display: none;
+        }
+
+        .options {
+            height: auto;
+
+            > * {
+                display: block;
+                opacity: 1;
+
+                @starting-style {
+                    opacity: 0;
+                }
+            }
+        }
+    }
+
+    &:has(~ .content-wrapper.menu-open) .video-container::after {
+        background: color(from var(--sage) srgb r g b / 0.4);
+    }
+
+    @media (width >= 40em) {
+        width: 40vw;
+    }
+
+    @media (width >= 64em) {
+        width: 20vw;
     }
 }
 
@@ -39,10 +110,12 @@ header {
 
         &:checked ~ span:nth-last-child(3) {
             transform: translateY(9px) rotate(45deg);
+            background: var(--white);
         }
 
         &:checked ~ span:nth-last-child(1) {
             transform: translateY(-9px) rotate(-45deg);
+            background: var(--white);
         }
     }
 
@@ -74,12 +147,24 @@ header {
     transition: transform 0.5s ease;
 
     &.menu-open {
-        transform: translateX(-20vw);
+        transform: translateX(-80vw);
     }
 
     main,
     footer {
         position: relative;
         z-index: 3;
+    }
+
+    @media (width >= 40em) {
+        &.menu-open {
+            transform: translateX(-40vw);
+        }
+    }
+
+    @media (width >= 64em) {
+        &.menu-open {
+            transform: translateX(-20vw);
+        }
     }
 }

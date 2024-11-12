@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const gameBoard = document.getElementById('game-board');
-    const gridSize = 40; // Size of each segment in pixels
+    let gridSize = 20; // Size of each segment in pixels
+
+    if (window.innerWidth >= 640) {
+        gridSize = 40;
+    }
 
     let snakeSegments = [];
     let direction = { x: 0, y: 0 };
@@ -20,13 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set game board size to be a multiple of gridSize
     function setGameBoardSize() {
-        let padding = gridSize;
-        if (window.innerWidth >= 640) {
-            padding = padding * 2;
-        }
+        let padding = gridSize * 2;
 
         let width = Math.floor((window.innerWidth / gridSize) * gridSize) - padding;
-        let height = Math.floor((window.innerHeight / gridSize) * gridSize) - padding;
+        let height = Math.floor((window.innerHeight / gridSize) * gridSize) - (padding * 2);
+
+        if (window.innerWidth >= 640) {
+            height = Math.floor((window.innerHeight / gridSize) * gridSize) - padding;
+        }
 
         width -= width % padding;
         height -= height % padding;
@@ -126,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.slow').addEventListener('click', () => setSpeed(800));
     document.querySelector('.medium').addEventListener('click', () => setSpeed(400));
     document.querySelector('.fast').addEventListener('click', () => setSpeed(300));
-    document.querySelector('.fastest').addEventListener('click', () => setSpeed(200));
+    document.querySelector('.fastest').addEventListener('click', () => setSpeed(50));
 
     setInterval(() => {
         // Check for inactivity to enable auto-play after 5 seconds

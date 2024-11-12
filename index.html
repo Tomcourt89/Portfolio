@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="menu-toggle" id="toggle">
-        <input type="checkbox"/>
+        <input type="checkbox" autocomplete="off"/>
 
         <span></span>
         <span></span>
@@ -23,8 +23,11 @@
     </div>
 
     <header>
+        <div class="video-container">
+            <video src="./assets/menu.mp4" muted loop></video> <!-- Temp video, need outside input on if its too much -->
+        </div>
         <section class="links">
-            <h2>Menu</h2>
+            <h2>My links</h2>
 
             <ul class="Contacts">
                 <li>
@@ -33,7 +36,9 @@
                 <li>
                     <a href="mailto:t1989court@gmail.com">Email</a>
                 </li>
-                <li></li>
+                <li>
+                    <a href="https://www.github.com/tomcourt89/">Github</a>
+                </li>
             </ul>
         </section>
         
@@ -47,7 +52,7 @@
                     <button class="slow">Snail</button>
                     <button class="medium">Snake</button>
                     <button class="fast">Pretty quick Snake</button>
-                    <button class="fastest">Snake with a jetpack</button> <!-- Hidden option -->
+                    <button class="fastest">Snake with a jetpack</button>
                 </div>
             </div>
         </section>
