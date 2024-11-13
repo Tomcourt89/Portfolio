@@ -87,12 +87,20 @@ header {
     }
 }
 
-.menu-toggle {
-    display: block;
+.menu-btns {
+    display: grid;
+    grid-template-columns: 40px 40px;
+    place-items: center;
+    gap: 20px;
     position: absolute;
     top: 10px;
     right: 10px;
     z-index: 1000;
+
+    > div {
+        display: grid;
+        place-items: center;
+    }
 
     input {
         display: block;
@@ -103,27 +111,10 @@ header {
         cursor: pointer;
         opacity: 0;
         z-index: 1001;
-
-        &:checked ~ span:nth-last-child(2) {
-            opacity: 0;
-        }
-
-        &:checked ~ span:nth-last-child(3) {
-            transform: translateY(9px) rotate(45deg);
-            background: var(--white);
-        }
-
-        &:checked ~ span:nth-last-child(1) {
-            transform: translateY(-9px) rotate(-45deg);
-            background: var(--white);
-        }
     }
 
     span {
         display: block;
-        width: 33px;
-        height: 4px;
-        margin-bottom: 5px;
         position: relative;
         background: var(--snake);
         border-radius: 3px;
@@ -132,8 +123,62 @@ header {
                     background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0),
                     opacity 0.55s ease;
     }
-}
 
+    .pause {
+        position: relative;
+        display: flex;
+
+        span {
+            height: 24px;
+            width: 4px;
+            
+            &:nth-last-child(2) {
+                opacity: 0;
+            }
+        }
+
+        input {
+            &:checked ~ span:nth-last-child(2) {
+                opacity: 1;
+                transform: translate(5px, 7px) rotate(60deg);
+            }
+
+            &:checked ~ span:nth-last-child(1) {
+                transform: translate(2px, -5px) rotate(-60deg);
+            }
+        }
+    }
+
+    .menu-toggle {
+        position: relative;
+        gap: 5px;
+    
+        input { 
+            &:checked ~ span:nth-last-child(2) {
+                opacity: 0;
+            }
+    
+            &:checked ~ span:nth-last-child(3) {
+                transform: translateY(9px) rotate(45deg);
+            }
+    
+            &:checked ~ span:nth-last-child(1) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+        }
+    
+        span {
+            width: 33px;
+            height: 4px;
+        }
+    }
+
+    &:has(~ .content-wrapper.menu-open) {
+        span {
+            background: var(--white);
+        }
+    }
+}
 
 .content-wrapper {
     position: relative;

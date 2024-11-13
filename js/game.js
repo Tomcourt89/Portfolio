@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         gameBoard.style.width = `${width}px`;
         gameBoard.style.height = `${height}px`;
+
+        // Setting the main content to always be the same height as the gameboard
+        document.querySelector('main').style.height = `${height}px`;
     }
 
     function createSnake(length) {
