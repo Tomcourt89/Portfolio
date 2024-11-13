@@ -195,12 +195,6 @@ header {
         transform: translateX(-80vw);
     }
 
-    main,
-    footer {
-        position: relative;
-        z-index: 3;
-    }
-
     @media (width >= 40em) {
         &.menu-open {
             transform: translateX(-40vw);
@@ -211,5 +205,22 @@ header {
         &.menu-open {
             transform: translateX(-20vw);
         }
+    }
+}
+
+main {
+    position: fixed;
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    z-index: 5;
+    display: grid;
+    justify-content: center;
+    background: var(--white); /* Temp while I work on it */
+
+    h1 {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
     }
 }

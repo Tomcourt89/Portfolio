@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelector('.slow').addEventListener('click', () => setSpeed(800));
     document.querySelector('.medium').addEventListener('click', () => setSpeed(400));
-    document.querySelector('.fast').addEventListener('click', () => setSpeed(300));
+    document.querySelector('.fast').addEventListener('click', () => setSpeed(200));
     document.querySelector('.fastest').addEventListener('click', () => setSpeed(50));
 
     setInterval(() => {
@@ -265,5 +265,30 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
         setGameBoardSize();
         resetGame();
+    });
+
+    // Arrow key controls
+    document.addEventListener('keydown', (event) => {
+        const key = event.key;
+        let newDirection = { x: direction.x, y: direction.y };
+
+        switch (key) {
+            case 'ArrowUp':
+                if (direction.y !== 1) newDirection = { x: 0, y: -1 };
+                break;
+            case 'ArrowDown':
+                if (direction.y !== -1) newDirection = { x: 0, y: 1 };
+                break;
+            case 'ArrowLeft':
+                if (direction.x !== 1) newDirection = { x: -1, y: 0 };
+                break;
+            case 'ArrowRight':
+                if (direction.x !== -1) newDirection = { x: 1, y: 0 };
+                break;
+        }
+
+        direction = newDirection;
+        autoMove = false; 
+        lastMoveTime = Date.now();
     });
 });
