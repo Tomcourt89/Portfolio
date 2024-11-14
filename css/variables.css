@@ -5,5 +5,16 @@
     --snake: #5e5e5e;
     --sage: #a8c2a2;
 
+    --font-body: "Kumbh Sans", serif;
+    --font-header: "Funnel Display", sans-serif;
+
     interpolate-size: allow-keywords; /* Chrome only */
+}
+
+h1, h2, h3, a, button {
+    font-family: var(--font-header);
+}
+
+p {
+    font-family: var(--font-body);
 }

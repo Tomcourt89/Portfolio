@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playToggle = document.querySelector('.just-play');
     const menuVideo = document.querySelector('video');
     const pauseToggle = document.querySelector('.pause input');
+    const links = document.querySelector('.links');
 
     let gamePause = false;
 
@@ -44,9 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (playToggle.classList.contains('active')) {
             playToggle.classList.remove('active');
             playToggle.textContent = initialPlayText;
+
+            if (window.innerHeight < 800 && links.style.display == "none") {
+                links.style.display = "block";
+            }
         } else {
             playToggle.classList.add('active');
             playToggle.textContent = 'Back to the content';
+
+            if (window.innerHeight < 800) {
+                links.style.display = "none"; 
+            }
         }
     });
 

@@ -40,7 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
         gameBoard.style.height = `${height}px`;
 
         // Setting the main content to always be the same height as the gameboard
-        document.querySelector('main').style.height = `${height}px`;
+        const mainContent = document.querySelector('main');
+
+        mainContent.style.width = `${width}px`;
+        mainContent.style.height = `${height}px`;
     }
 
     function createSnake(length) {
@@ -123,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // TODO Add keyboard controls option when content is hidden.
     function setSpeed(speed) {
         currentSpeed = speed;
         clearInterval(moveInterval);
@@ -211,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // TODO Immunity and new auto logic helps prevent colliding with itself, need to test further.
             if (snakeSegments.length > 2) {
                 const secondSegmentX = snakeSegments[1].offsetLeft;
                 const secondSegmentY = snakeSegments[1].offsetTop;
