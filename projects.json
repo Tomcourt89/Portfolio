@@ -1,0 +1,25 @@
+{
+    "workProjects": [
+      {
+        "title": "Visit Lincoln",
+        "imageSrc": "./assets/project-screens/visitlincoln.png",
+        "url": "https://www.visitlincoln.com"
+      },
+      {
+        "title": "Visit Swansea Bay",
+        "imageSrc": "./assets/project-screens/visitswanseabay.png",
+        "url": "https://www.visitswanseabay.com"
+      }
+    ],
+
+
+
+    "personalProjects": [
+      {
+        "title": "Solar System",
+        "imageSrc": "./assets/project-screens/solarsystem.png",
+        "url": "https://tomcourt89.github.io/Solar-System/"
+      }
+    ]
+  }
+  

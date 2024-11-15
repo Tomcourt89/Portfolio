@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-
-    // Menu toggle functionality
     const menuToggle = document.querySelector('.menu-toggle input');
     const contentWrapper = document.querySelector('.content-wrapper');
     const playToggle = document.querySelector('.just-play');
     const menuVideo = document.querySelector('video');
     const pauseToggle = document.querySelector('.pause input');
     const links = document.querySelector('.links');
+    const modal = document.querySelector('.iframeModal');
+    const closeBtn = document.querySelector('.close');
+    const iframe = document.querySelector('.iframeContent');
 
     let gamePause = false;
-
     const initialPlayText = playToggle.textContent;
 
     // Game previously paused on menu open but will now toggle the pause button too
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!pauseToggle.checked) {
                 pauseToggle.checked = true;
             }
-
         } else {
             contentWrapper.classList.remove('menu-open');
             menuVideo.pause();
@@ -32,11 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 pauseToggle.checked = false;
             }
         }
+
+        // Menu click/tap off
+        contentWrapper.addEventListener('click', () => {
+            contentWrapper.classList.remove('menu-open');
+            menuVideo.pause();
+            gamePause = false;
+            menuToggle.checked = false;
+
+            if (pauseToggle.checked) {
+                pauseToggle.checked = false;
+            }
+        });
     });
 
     // Autocomplete in the html seems to achieve this, may not be necessary.
-    window.addEventListener('pageshow', (ev) => {
-        if (ev.persisted) {
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
             menuToggle.checked = false;
         }
     });
@@ -75,4 +86,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.gamePause = () => gamePause;
+
+    function generateProjectCards(projects, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+
+        projects.forEach(project => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            
+            const content = document.createElement('div');
+            content.classList.add('content');
+            
+            const title = document.createElement('h3');
+            title.textContent = project.title;
+            content.appendChild(title);
+
+            const image = document.createElement('img');
+            image.classList.add('screenshot');
+            image.src = project.imageSrc;
+            image.alt = `${project.title} Screenshot`;
+            image.setAttribute('data-url', project.url);
+
+            card.appendChild(content);
+            card.appendChild(image);
+            container.appendChild(card);
+        });
+
+        const screenshots = document.querySelectorAll('.screenshot');
+
+        screenshots.forEach(screenshot => {
+            screenshot.addEventListener('click', openModal);
+        });
+    }
+
+    // Fetch the JSON data and render the projects
+    fetch('./projects.json')
+    .then(response => response.json())
+    .then(data => {
+        generateProjectCards(data.workProjects, 'work-projects');
+        generateProjectCards(data.personalProjects, 'personal-projects');
+    })
+    .catch(error => console.error('Error loading JSON:', error));
+
+    function openModal(event) {
+        gamePause = true;
+        const clickedScreenshot = event.target;
+        
+        // Set iframe URL from the data-url attribute
+        const url = clickedScreenshot.dataset.url;
+        iframe.src = url;
+
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+        iframe.src = "";
+
+        gamePause = false;
+    }
+
+    closeBtn.addEventListener('click', closeModal);
+
+    window.addEventListener('click', (event) => {
+        // if (event.target === modal) {
+        //     closeModal();
+        // }
+
+        // Cant figure out why above doesnt work, obtuse workaround till i come back to it.
+        if (event.target === contentWrapper || event.target === menuToggle || event.target === pauseToggle || event.target === document.querySelector('#game-board') || event.target === document.querySelector('main')) {
+            closeModal();
+        }
+    });
 });
