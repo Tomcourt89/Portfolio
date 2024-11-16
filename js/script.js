@@ -97,21 +97,41 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const content = document.createElement('div');
             content.classList.add('content');
+
+            const imgCont = document.createElement('div');
+            imgCont.classList.add('img-cont');
+            
+            const link = document.createElement('a');
+            link.href = project.url;
             
             const title = document.createElement('h3');
             title.textContent = project.title;
-            content.appendChild(title);
-
+            
+            if (project.url) {
+                const icon = document.createElement('i');
+                icon.classList.add('fa-solid', 'fa-up-right-from-square');
+                link.appendChild(title);
+                link.appendChild(icon);
+            } else {
+                link.appendChild(title);
+            }
+            
+            content.appendChild(link);
+        
             const image = document.createElement('img');
             image.classList.add('screenshot');
+            image.classList.add(project.theme); // Just to choose the expand button colour
             image.src = project.imageSrc;
             image.alt = `${project.title} Screenshot`;
             image.setAttribute('data-url', project.url);
-
+        
             card.appendChild(content);
-            card.appendChild(image);
+            card.appendChild(imgCont);
+            imgCont.appendChild(image);
             container.appendChild(card);
         });
+        
+        
 
         const screenshots = document.querySelectorAll('.screenshot');
 
@@ -131,6 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openModal(event) {
         gamePause = true;
+        if (!pauseToggle.checked) {
+            pauseToggle.checked = true;
+        }
         const clickedScreenshot = event.target;
         
         // Set iframe URL from the data-url attribute
@@ -141,11 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeModal() {
-        modal.style.display = "none";
-        iframe.src = "";
+        if (modal.style.display === "block") {
+            modal.style.display = "none";
+            iframe.src = "";
 
-        gamePause = false;
+            gamePause = false;
+            pauseToggle.checked = false;
+        }
     }
+    
 
     closeBtn.addEventListener('click', closeModal);
 

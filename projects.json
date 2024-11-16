@@ -3,12 +3,38 @@
       {
         "title": "Visit Lincoln",
         "imageSrc": "./assets/project-screens/visitlincoln.png",
-        "url": "https://www.visitlincoln.com"
+        "url": "https://www.visitlincoln.com",
+        "theme": "dark"
       },
       {
-        "title": "Visit Swansea Bay",
-        "imageSrc": "./assets/project-screens/visitswanseabay.png",
-        "url": "https://www.visitswanseabay.com"
+        "title": "Visit Effingham",
+        "imageSrc": "./assets/project-screens/effingham.png",
+        "url": "https://www.visiteffinghamil.com/",
+        "theme": "dark"
+      },
+      {
+        "title": "Visit Bristol",
+        "imageSrc": "./assets/project-screens/visitbristol.png",
+        "url": "https://visitbristol.co.uk/",
+        "theme": "light"
+      },
+      {
+        "title": "Visit Hamilton",
+        "imageSrc": "./assets/project-screens/hamilton.png",
+        "url": "https://www.visithamiltoncounty.com/",
+        "theme": "dark"
+      },
+      {
+        "title": "Visit Cape Cod",
+        "imageSrc": "./assets/project-screens/capecod.png",
+        "url": "https://www.capecodchamber.org/",
+        "theme": "dark"
+      },
+      {
+        "title": "Visit Manchester",
+        "imageSrc": "./assets/project-screens/manchester.png",
+        "url": "https://www.visitmanchester.com/",
+        "theme": "dark"
       }
     ],
 
@@ -18,7 +44,20 @@
       {
         "title": "Solar System",
         "imageSrc": "./assets/project-screens/solarsystem.png",
-        "url": "https://tomcourt89.github.io/Solar-System/"
+        "url": "https://tomcourt89.github.io/Solar-System/",
+        "theme": "dark"
+      },
+      {
+        "title": "Skilled eLearning",
+        "imageSrc": "./assets/project-screens/elearning.png",
+        "url": "https://tomcourt89.github.io/Skilled-elearning/",
+        "theme": "light"
+      },
+      {
+        "title": "Workit",
+        "imageSrc": "./assets/project-screens/workit.png",
+        "url": "https://tomcourt89.github.io/Workit-landing/",
+        "theme": "dark"
       }
     ]
   }
